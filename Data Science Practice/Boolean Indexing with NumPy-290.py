@@ -32,3 +32,55 @@ february_rides = february.shape[0]
 march_bool = pickup_month == 3
 march = pickup_month[march_bool]
 march_rides = march.shape[0]
+
+## 4. Boolean Indexing with 2D ndarrays ##
+
+tip_amount = taxi[:,12]
+
+tip_bool = tip_amount > 50
+top_tips = taxi[tip_bool, 5:14]
+print(top_tips)
+
+## 5. Assigning Values in ndarrays ##
+
+# this creates a copy of our taxi ndarray
+taxi_modified = taxi.copy()
+taxi_modified[28214, 5] = 1
+taxi_modified[:, 0] = 16
+taxi_modified[[1800, 1801], 7] = taxi_modified[:, 7].mean()
+
+## 6. Assignment Using Boolean Arrays ##
+
+# this creates a copy of our taxi ndarray
+taxi_modified = taxi.copy()
+
+# create a new column filled with `0`.
+zeros = np.zeros([taxi_modified.shape[0], 1])
+taxi_modified = np.concatenate([taxi, zeros], axis=1)
+print(taxi_modified)
+
+taxi_modified[taxi_modified[ : , 5] == 2, 15] = 1
+taxi_modified[taxi_modified[ : , 5] == 3, 15] = 1
+taxi_modified[taxi_modified[ : , 5] == 5, 15] = 1
+
+## 7. Challenge: Which is the most popular airport? ##
+
+jfk = taxi[taxi[:,6] == 2]
+jfk_count = jfk.shape[0]
+
+laguardia = taxi[taxi[:,6] == 3]
+laguardia_count = laguardia.shape[0]
+
+newark = taxi[taxi[:,6] == 5]
+newark_count = newark.shape[0]
+
+## 8. Challenge: Calculating Statistics for Trips on Clean Data ##
+
+trip_mph = taxi[:,7] / (taxi[:,8] / 3600)
+
+cleaned_taxi = taxi[trip_mph < 100]
+
+mean_distance = cleaned_taxi[:,7].mean()
+mean_length = cleaned_taxi[:, 8].mean()
+mean_total_amount = cleaned_taxi[:, 13].mean()
+mean_mph = trip_mph[trip_mph < 100].mean()
